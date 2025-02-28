@@ -1,0 +1,21 @@
+{
+  "name": "twitch-bot-framework-preview",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/kajahl/twitch-bot-framework-preview.git",
+  "author": "kajahl <kacperjahl37@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "ts-node src/index.ts",
+    "build": "tsc"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "twitch-bot-framework": "1.0.3",
+    "typescript": "^5.7.3"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.1",
+    "ts-node": "^10.9.2"
+  }
+}
