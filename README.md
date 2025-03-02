@@ -68,7 +68,6 @@ export default class MyCommand implements ChatCommandExecution {
     //...
 })
 class Bot {}
-});
 ```
 
 Similarly if you want to add a listener:
@@ -95,5 +94,4 @@ export default class ChatLogListener implements ChatListenerExecution {
     //...
 })
 class Bot {}
-});
 ```
