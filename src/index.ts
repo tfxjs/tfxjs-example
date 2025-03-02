@@ -1,8 +1,9 @@
 import "reflect-metadata";
 import dotenv from 'dotenv';
-import { ExampleCommand, InMemoryTokenRepository, LogLevel, PingCommand, ShowMessageListener, TwitchBot } from 'twitch-bot-framework';
-import ListenChannelsProvider from "./ListenChannels.provider";
+import { APIRateLimiterModule, CacheModule, ChatBotModule, CommandsModule, CounterListener, ExampleCommand, InMemoryTokenRepository, ListenersModule, LogLevel, PingCommand, ShowMessageListener, TwitchBot } from "@tfxjs/tfxjs";
 import ChannelOptionsProvider from "./ChannelOptions.provider";
+import ListenChannelsProvider from "./ListenChannels.provider";
+import MyCommand from "./commands/My.command";
 import PrefixCommand from "./commands/Prefix.command";
 import LogListener from "./listeners/ChatLog.listener";
 
@@ -14,21 +15,29 @@ const userId = process.env.USER_ID as string;
 const userRefreshToken = process.env.USER_REFRESH_TOKEN as string;
 
 @TwitchBot({
-    userId,
-    clientId,
-    clientSecret,
-    listenChannels: {
-        provider: ListenChannelsProvider,
-        refreshInterval: 30000,
+    client: {
+        id: clientId,
+        secret: clientSecret,
     },
-    channelOptions: {
-        provider: ChannelOptionsProvider,
-    },
-    tokenRepository: InMemoryTokenRepository,
-    commands: [PingCommand, PrefixCommand, ExampleCommand],
-    listeners: [ShowMessageListener, LogListener],
+    userId: userId,
+    modules: [
+        ChatBotModule.forRoot({
+            listenChannels: { useClass: ListenChannelsProvider },
+            channelOptions: { useClass: ChannelOptionsProvider },
+            tokenRepository: { useValue: new InMemoryTokenRepository(userId, userRefreshToken) },
+        }),
+        CommandsModule.forRoot({
+            commands: [PingCommand, ExampleCommand, MyCommand, PrefixCommand],
+        }),
+        ListenersModule.forRoot({
+            listeners: [CounterListener, ShowMessageListener, LogListener],
+        }),
+        CacheModule.forRoot(),
+        APIRateLimiterModule.forRoot(),
+    ],
     log: {
-        levels: [LogLevel.INFO, LogLevel.NORMAL, LogLevel.ERROR, LogLevel.WARN] //, LogLevel.DEBUG],
+        levels: [LogLevel.INFO, LogLevel.NORMAL, LogLevel.ERROR, LogLevel.WARN, LogLevel.DEBUG],
     },
 })
 class Bot {}
+

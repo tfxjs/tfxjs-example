@@ -1,4 +1,4 @@
-import { TChannelOptions } from "twitch-bot-framework";
+import { TChannelOptions } from "@tfxjs/tfxjs";
 
 export type ChannelOptionsExtend = TChannelOptions<{
     additionalOption1: string;

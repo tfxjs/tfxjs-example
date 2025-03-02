@@ -1,8 +1,8 @@
-import { ChatListener, ChatListenerExecution, PartialTwitchUser, Sender, SenderData, TwitchUser, TwitchUserBroadcasterType } from "twitch-bot-framework";
+import { ChatListener, ChatListenerExecution, ListenersModule, PartialTwitchUser, Sender, SenderData, TwitchUser, TwitchUserBroadcasterType } from "@tfxjs/tfxjs";
 
-@ChatListener({
+@ChatListener(ListenersModule.forFeature({
     name: 'Alert'
-})
+}))
 export default class LogListener implements ChatListenerExecution {
     async execution(
         @SenderData() senderData: PartialTwitchUser,

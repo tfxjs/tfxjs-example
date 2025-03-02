@@ -1,9 +1,9 @@
-import { ChatCommand, ChatCommandExecution, Mess, TwitchChatMessage } from "twitch-bot-framework";
+import { ChatCommand, ChatCommandExecution, CommandsModule, Mess, TwitchChatMessage } from "@tfxjs/tfxjs";
 
-@ChatCommand({
-    name: 'mycommand',
-    keyword: 'my'
-})
+@ChatCommand(CommandsModule.forFeature({
+    name: 'my',
+    keyword: 'my',
+}))
 export default class MyCommand implements ChatCommandExecution {
     async execution(
         @Mess() message: TwitchChatMessage

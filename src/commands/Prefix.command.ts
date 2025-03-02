@@ -1,9 +1,9 @@
-import { ChannelOptionsProvider, ChatCommand, ChatCommandExecution, ChatCommandExecutionGuard, ChatCommandExecutionGuardAvaliableResults, ChatterUser, Mess, MessageUser, OptionsProvider, TwitchChatMessage } from "twitch-bot-framework";
+import { ChannelOptionsProvider, ChatCommand, ChatCommandExecution, ChatCommandExecutionGuard, ChatCommandExecutionGuardAvaliableResults, ChatterUser, CommandsModule, Mess, MessageUser, OptionsProvider, TwitchChatMessage } from "@tfxjs/tfxjs";
 
-@ChatCommand({
+@ChatCommand(CommandsModule.forFeature({
     name: 'ChangePrefixCommand',
     keyword: 'prefix'
-})
+}))
 export default class PrefixCommand implements ChatCommandExecution, ChatCommandExecutionGuard {
     guard(
         @MessageUser() chatter: ChatterUser,

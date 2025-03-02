@@ -1,18 +1,18 @@
-import { IChannelOptionsProvider } from "twitch-bot-framework";
+import { IChannelOptionsProvider } from "@tfxjs/tfxjs";
 import { ChannelOptionsExtend } from "./types";
 
 export default class ChannelOptionsProvider implements IChannelOptionsProvider<ChannelOptionsExtend> {
     private readonly baseOptions: ChannelOptionsExtend = {
         prefix: '!',
-        additionalOption1: 'test',
-        additionalOption2: 123,
-        additionalOption3: true,
-        eXampleExecutionCounter: 0
-    }
+        eXampleExecutionCounter: 0,
+        additionalOption1: 'default',
+        additionalOption2: 0,
+        additionalOption3: false,
+    };
     private readonly changedOptions = new Map<string, ChannelOptionsExtend>();
 
     async getOptions(channelId: string): Promise<ChannelOptionsExtend> {
-        if(this.changedOptions.has(channelId)) {
+        if (this.changedOptions.has(channelId)) {
             return this.changedOptions.get(channelId) as ChannelOptionsExtend;
         }
         return this.baseOptions;
