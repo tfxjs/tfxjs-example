@@ -1,7 +1,7 @@
 # Twitch Bot Framework Preview
 
 ## 📌 Description
-This repository demonstrates the functionality of the [Twitch Bot Framework package](https://www.npmjs.com/package/twitch-bot-framework). You can clone this repo and run using Docker.
+This repository demonstrates the functionality of the [TFxJS package](https://www.npmjs.com/package/@tfxjs/tfxjs). You can clone this repo and run using Docker.
 
 ---
 
@@ -45,47 +45,53 @@ docker-compose down
 
 ## How to add command / listener?
 
-By default, 2 commands and 1 listener are enabled: `PingCommand` (example command from package), custom `MyCommand` and `ChatLogListener`. For the command to work it is required to decorate it with the `@ChatCommand` decorator and to write the command class to the `TwitchBotFramework` config.
-
 ```typescript
-@ChatCommand({
-    name: 'mycommand',
+@ChatCommand(CommandsModule.forFeature({
+    name: 'MyCommand',
     keyword: 'my'
-})
+}))
 export default class MyCommand implements ChatCommandExecution {
     //...
 }
 ```
 
 ```typescript
-const app = new TwitchBotFramework({
+@TwitchBot({
     //...
-    chat: {
-        commands: [/*...*/ MyCommand /*...*/],
-        listeners: [/*...*/]
-    }
+    modules: [
+        //...
+        CommandsModule.forRoot({
+            commands: [MyCommand],
+        }),
+        //...
+    ],
     //...
-});
+})
+class Bot {}
 ```
 
 Similarly if you want to add a listener:
 
 ```typescript
-@ChatListener({
-    name: 'chatlog'
-})
+@ChatListener(ListenersModule.forFeature({
+    name: 'ChatLogListener'
+}))
 export default class ChatLogListener implements ChatListenerExecution {
     //...
 }
 ```
 
 ```typescript
-const app = new TwitchBotFramework({
+@TwitchBot({
     //...
-    chat: {
-        commands: [/*...*/],
-        listeners: [/*...*/ ChatLogListener /*...*/]
-    }
+    modules: [
+        //...
+        ListenersModule.forRoot({
+            listeners: [ChatLogListener],
+        }),
+        //...
+    ],
     //...
-});
+})
+class Bot {}
 ```
