@@ -1,11 +1,12 @@
 import "reflect-metadata";
 import dotenv from 'dotenv';
-import { APIRateLimiterModule, CacheModule, ChatBotModule, CommandsModule, CounterListener, ExampleCommand, InMemoryTokenRepository, ListenersModule, LogLevel, PingCommand, ShowMessageListener, TwitchBot } from "@tfxjs/tfxjs";
+import { APIRateLimiterModule, CacheModule, ChatBotModule, CommandsModule, InMemoryTokenRepository, ListenersModule, LogLevel, LogModule, TwitchBot } from "@tfxjs/tfxjs";
 import ChannelOptionsProvider from "./ChannelOptions.provider";
 import ListenChannelsProvider from "./ListenChannels.provider";
 import MyCommand from "./commands/My.command";
 import PrefixCommand from "./commands/Prefix.command";
-import LogListener from "./listeners/ChatLog.listener";
+import ShowMessageListener from "./listeners/ShowMessage.listener";
+import PingCommand from "./commands/Ping.command";
 
 dotenv.config();
 
@@ -27,17 +28,23 @@ const userRefreshToken = process.env.USER_REFRESH_TOKEN as string;
             tokenRepository: { useValue: new InMemoryTokenRepository(userId, userRefreshToken) },
         }),
         CommandsModule.forRoot({
-            commands: [PingCommand, ExampleCommand, MyCommand, PrefixCommand],
+            commands: [PingCommand, MyCommand, PrefixCommand],
         }),
         ListenersModule.forRoot({
-            listeners: [CounterListener, ShowMessageListener, LogListener],
+            listeners: [ShowMessageListener],
         }),
         CacheModule.forRoot(),
         APIRateLimiterModule.forRoot(),
+        LogModule.forRoot({
+            levels: [
+                LogLevel.NORMAL,
+                LogLevel.INFO, 
+                LogLevel.WARN, 
+                LogLevel.ERROR, 
+                // LogLevel.DEBUG, 
+            ],
+        })
     ],
-    log: {
-        levels: [LogLevel.INFO, LogLevel.NORMAL, LogLevel.ERROR, LogLevel.WARN, LogLevel.DEBUG],
-    },
 })
 class Bot {}
 

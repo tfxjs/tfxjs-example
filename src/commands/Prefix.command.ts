@@ -1,4 +1,4 @@
-import { ChannelOptionsProvider, ChatCommand, ChatCommandExecution, ChatCommandExecutionGuard, ChatCommandExecutionGuardAvaliableResults, ChatterUser, CommandsModule, Mess, MessageUser, OptionsProvider, TwitchChatMessage } from "@tfxjs/tfxjs";
+import { ChannelOptionsProvider, ChatCommand, ChatCommandExecution, ChatCommandExecutionGuard, ChatCommandExecutionGuardAvaliableResults, ChatterUser, CommandsModule, Mess, MessageUser, OptionsManager, OptionsProvider, TwitchChatMessage } from "@tfxjs/tfxjs";
 
 @ChatCommand(CommandsModule.forFeature({
     name: 'ChangePrefixCommand',
@@ -13,7 +13,7 @@ export default class PrefixCommand implements ChatCommandExecution, ChatCommandE
     }
 
     async execution(
-        @OptionsProvider() options: ChannelOptionsProvider,
+        @OptionsManager() options: ChannelOptionsProvider,
         @Mess() message: TwitchChatMessage
     ) {
         console.log('ChangePrefixCommand executed');
@@ -23,10 +23,11 @@ export default class PrefixCommand implements ChatCommandExecution, ChatCommandE
             message.reply('You need to specify a prefix');
             return;
         }
+
+        const saver = options.getChannelOptionsSaver(message.getBroadcasterId());
+        await saver('prefix', newPrefix);
+
         message.reply(`Prefix changed to ${newPrefix}`);
-        options.setChannelOptions(message.getBroadcasterId(), {
-            ...options,
-            prefix: newPrefix
-        })
+        
     }
 }
