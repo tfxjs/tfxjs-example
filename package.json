@@ -10,7 +10,7 @@
     "build": "tsc"
   },
   "dependencies": {
-    "@tfxjs/tfxjs": "^0.2.2",
+    "@tfxjs/tfxjs": "^0.2.3",
     "dotenv": "^16.4.7",
     "typescript": "^5.7.3"
   },
